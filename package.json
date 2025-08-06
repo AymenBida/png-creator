@@ -1,0 +1,40 @@
+{
+    "name": "png-creator",
+    "version": "1.0.0",
+    "description": "A tool for creating PNG images programmatically",
+    "keywords": [
+        "png",
+        "image",
+        "graphics",
+        "canvas"
+    ],
+    "homepage": "https://github.com/AymenBida/png-creator",
+    "bugs": {
+        "url": "https://github.com/AymenBida/png-creator/issues"
+    },
+    "author": "Aymen Bida <aymen.bida.00@gmail.com>",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AymenBida/png-creator.git"
+    },
+    "files": [
+        "dist"
+    ],
+    "type": "module",
+    "main": "dist/index.js",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^24.2.0",
+        "prettier": "^3.6.2",
+        "typescript": "^5.9.2",
+        "vitest": "^3.2.4"
+    },
+    "scripts": {
+        "test": "vitest run",
+        "dev": "vitest",
+        "build": "tsc",
+        "ci": "npm run build && npm run check-format && npm run test",
+        "format": "prettier --write .",
+        "check-format": "prettier --check ."
+    }
+}
