@@ -15,6 +15,12 @@ export type PixelCanvasOptions = {
     backgroundColor: Color;
 };
 
+export interface IPixelCanvas {
+    getPixelMap(): PixelMap;
+    getSize(): { width: number; height: number };
+    getBackgroundColor(): number;
+}
+
 export class PixelCanvas {
     #width: number = 16;
     #height: number = 16;

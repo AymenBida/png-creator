@@ -9,10 +9,10 @@ import type {
     PixelMap,
 } from './png.types.js';
 import { COLOR_TYPES } from './png.types.js';
-import type { PixelCanvas } from './pixelCanvas.js';
+import type { IPixelCanvas } from './pixelCanvas.js';
 import { createPixelBuffer } from './png.helper.js';
 
-interface PNGCreatorDependencies {
+export interface PNGCreatorDependencies {
     zlibModule: { deflateSync: (buf: Buffer) => Buffer };
 }
 class PNGCreator {
@@ -144,7 +144,7 @@ class PNGCreator {
         pixelCanvas,
         colorType,
     }: {
-        pixelCanvas: PixelCanvas;
+        pixelCanvas: IPixelCanvas;
         colorType: AvailableColorType;
     }): Buffer {
         const { width, height } = pixelCanvas.getSize();
@@ -180,7 +180,7 @@ class PNGCreator {
         pixelCanvas,
         colorMode,
     }: {
-        pixelCanvas: PixelCanvas;
+        pixelCanvas: IPixelCanvas;
         /** Grayscale: 0, True Color: 2, GrayScale + alpha: 4, True Color + alpha: 6, default is True Color */
         colorMode?: AvailableColorType;
     }): Buffer {
