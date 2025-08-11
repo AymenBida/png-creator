@@ -1,5 +1,11 @@
 # png-creator
 
+## 1.0.2
+
+### Patch Changes
+
+- 4d3a30f: Add readme and export types in the lib
+
 ## 1.0.1
 
 ### Patch Changes
