@@ -1,6 +1,6 @@
 {
     "name": "png-creator",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "A tool for creating PNG images programmatically",
     "keywords": [
         "png",

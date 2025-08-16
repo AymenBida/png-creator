@@ -1,5 +1,11 @@
 # png-creator
 
+## 1.0.3
+
+### Patch Changes
+
+- d70c161: remove source maps from build to make it lighter
+
 ## 1.0.2
 
 ### Patch Changes
