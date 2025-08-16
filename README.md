@@ -26,7 +26,7 @@ This is basically a function used to create an instance of the `PNGCreator` whic
 
 So, what is a Canvas ?
 
-Well, it's the `PixelCanvas` ! It is a tool to create a pixel map of color value that can be used with the `PNGCreator` to create the PNG (or used for any other reason you see fit)
+Well, it's the `PixelCanvas` ! It is a tool to create a pixel map of color values that can be used with the `PNGCreator` to create the PNG (or used for any other reason you see fit)
 
 It is used like this:
 
@@ -149,7 +149,7 @@ const png = getPNGCreator().createFromBuffer({
 
 // ⚠️ width and height are not arbitrary, the buffer needs to be created to work with the correct width and height to work as expected
 ```
-In case someone is wondering what is the second element, we already talked about in depth in the first part, and it is the PixelCanvas, but here is the second title anyway 😄
+In case someone is wondering what is the second element, we already talked about it in depth in the first part, and it is the PixelCanvas, but here is the second title anyway 😄
 
 ### PixelCanvas
 
