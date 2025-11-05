@@ -424,4 +424,52 @@ describe('PixelCanvas', () => {
             expect(pixelCanvas.getBackgroundColor()).toBe(0);
         });
     });
+
+    describe('setScale', () => {
+        it('should multiply the height and width of the canvas by the scale', () => {
+            const pixelCanvas = new PixelCanvas({ height: 2, width: 2, backgroundColor: 0 });
+            pixelCanvas.setScale(4);
+            expect(pixelCanvas.getSize()).toEqual({ width: 8, height: 8 });
+        });
+
+        it('should throw an error if the scale is not a number', () => {
+            const pixelCanvas = new PixelCanvas();
+            expect(() =>
+                // @ts-expect-error -- Testing invalid input
+                pixelCanvas.setScale('notANumber'),
+            ).toThrow(TypeError);
+        });
+
+        it('should throw an error if the scale is negative', () => {
+            const pixelCanvas = new PixelCanvas();
+            expect(() => pixelCanvas.setScale(-1)).toThrow(RangeError);
+        });
+
+        it('should throw an error if the scale is not an integer', () => {
+            const pixelCanvas = new PixelCanvas();
+            expect(() => pixelCanvas.setScale(2.5)).toThrow(TypeError);
+        });
+
+        it('should throw an error if the scale is out of range (smaller)', () => {
+            const pixelCanvas = new PixelCanvas();
+            expect(() => pixelCanvas.setScale(0)).toThrow(RangeError);
+        });
+
+        it('should throw an error if the scale is out of range (bigger)', () => {
+            const pixelCanvas = new PixelCanvas();
+            expect(() => pixelCanvas.setScale(101)).toThrow(RangeError);
+        });
+
+        it('should scale the pixel map correctly', () => {
+            const pixelCanvas = new PixelCanvas({ height: 2, width: 2, backgroundColor: 0 });
+            pixelCanvas.setPixel({ x: 0, y: 0, color: 0x123456 });
+            pixelCanvas.setScale(2);
+            expect(pixelCanvas.getPixelMap()).toEqual([
+                [0x123456, 0x123456, undefined, undefined],
+                [0x123456, 0x123456, undefined, undefined],
+                [undefined, undefined, undefined, undefined],
+                [undefined, undefined, undefined, undefined],
+            ]);
+        });
+    });
 });

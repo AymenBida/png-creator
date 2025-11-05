@@ -29,3 +29,9 @@ export const throwIfOutOfRange = (value: number, range: { min: number; max: numb
         throw RangeError(`value: <${value}> must be between <${min}> and <${max}>`);
     }
 };
+
+export const throwIfNotInteger: (value: number) => asserts value is number = (value) => {
+    if (!Number.isInteger(value)) {
+        throw TypeError(`value: <${value}> is not an integer`);
+    }
+};

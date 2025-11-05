@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
     throwIfNegative,
     throwIfNotInKeys,
+    throwIfNotInteger,
     throwIfNotNumber,
     throwIfOutOfRange,
 } from './validation.js';
@@ -53,5 +54,15 @@ describe(throwIfOutOfRange.name, () => {
 
     it('should not throw an error if the value is within the specified range', () => {
         expect(() => throwIfOutOfRange(3, { min: 0, max: 5 })).not.toThrow();
+    });
+});
+
+describe(throwIfNotInteger.name, () => {
+    it('should throw an error if the input is not an integer', () => {
+        expect(() => throwIfNotInteger(3.14)).toThrow(TypeError);
+    });
+
+    it('should not throw an error if the input is an integer', () => {
+        expect(() => throwIfNotInteger(42)).not.toThrow();
     });
 });

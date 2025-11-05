@@ -1,6 +1,7 @@
 import {
     throwIfNegative,
     throwIfNotInKeys,
+    throwIfNotInteger,
     throwIfNotNumber,
     throwIfOutOfRange,
 } from './validation.js';
@@ -69,7 +70,7 @@ export class PixelCanvas {
         y: number;
         /** If not set the last used color will be used */
         color?: Color;
-    }): this {
+    }): PixelCanvas {
         throwIfOutOfRange(x, { min: 0, max: this.#width - 1 });
         throwIfOutOfRange(y, { min: 0, max: this.#height - 1 });
 
@@ -90,7 +91,7 @@ export class PixelCanvas {
         yValues: number[];
         /** If not set the last used color will be used */
         color?: Color;
-    }): this {
+    }): PixelCanvas {
         for (const x of xValues) {
             throwIfOutOfRange(x, { min: 0, max: this.#width - 1 });
         }
@@ -116,7 +117,7 @@ export class PixelCanvas {
         x: number;
         /** If not set the last used color will be used */
         color?: Color;
-    }): this {
+    }): PixelCanvas {
         throwIfOutOfRange(x, { min: 0, max: this.#width - 1 });
 
         const currentColor = color !== undefined ? this.#validateColor(color) : this.#lastUsedColor;
@@ -135,7 +136,7 @@ export class PixelCanvas {
         y: number;
         /** If not set the last used color will be used */
         color?: Color;
-    }): this {
+    }): PixelCanvas {
         throwIfOutOfRange(y, { min: 0, max: this.#height - 1 });
 
         const currentColor = color !== undefined ? this.#validateColor(color) : this.#lastUsedColor;
@@ -144,6 +145,47 @@ export class PixelCanvas {
         }
         this.#lastUsedColor = currentColor;
 
+        return this;
+    }
+
+    #scaleOnePixel({
+        x,
+        y,
+        scale,
+        pixelMap,
+    }: {
+        x: number;
+        y: number;
+        scale: number;
+        pixelMap: PixelMap;
+    }): void {
+        for (let i = 0; i < scale; i++) {
+            for (let j = 0; j < scale; j++) {
+                const newX = x * scale + i;
+                const newY = y * scale + j;
+                pixelMap[newX]![newY] = this.#pixelMap[x]![y];
+            }
+        }
+    }
+
+    setScale(scale: number): PixelCanvas {
+        throwIfNotNumber(scale);
+        throwIfNegative(scale);
+        throwIfOutOfRange(scale, { min: 1, max: 100 });
+        throwIfNotInteger(scale);
+        const newWidth = this.#width * scale;
+        const newHeight = this.#height * scale;
+        const newPixelMap: PixelMap = new Array<number[] | undefined>(newWidth)
+            .fill(undefined)
+            .map(() => new Array<number | undefined>(newHeight).fill(undefined));
+        for (let x = 0; x < this.#width; x++) {
+            for (let y = 0; y < this.#height; y++) {
+                this.#scaleOnePixel({ x, y, scale, pixelMap: newPixelMap });
+            }
+        }
+        this.#width = newWidth;
+        this.#height = newHeight;
+        this.#pixelMap = newPixelMap;
         return this;
     }
 
