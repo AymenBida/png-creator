@@ -1,5 +1,11 @@
 # png-creator
 
+## 1.1.0
+
+### Minor Changes
+
+- 0b203b5: Add setScale to PixelCanvas and fix type definition exports
+
 ## 1.0.3
 
 ### Patch Changes
