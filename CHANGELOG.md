@@ -1,5 +1,11 @@
 # png-creator
 
+## 2.0.1
+
+### Patch Changes
+
+- 46a23cf: fix build
+
 ## 2.0.0
 
 ### Major Changes
