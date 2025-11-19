@@ -1,5 +1,11 @@
 # png-creator
 
+## 2.0.0
+
+### Major Changes
+
+- dab66c0: seperate exports for png creator and pixel canvas
+
 ## 1.1.0
 
 ### Minor Changes
