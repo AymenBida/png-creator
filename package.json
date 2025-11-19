@@ -21,7 +21,6 @@
         "dist"
     ],
     "type": "module",
-    "main": "dist/index.js",
     "license": "MIT",
     "devDependencies": {
         "@changesets/cli": "^2.29.5",
@@ -40,5 +39,15 @@
         "check-format": "prettier --check src",
         "local-release": "changeset version && changeset publish",
         "prepublishOnly": "npm run ci"
+    },
+    "exports": {
+        ".": {
+            "import": "./dist/png.js",
+            "types": "./dist/png.d.ts"
+        },
+        "./canvas": {
+            "import": "./dist/pixelCanvas.js",
+            "types": "./dist/pixelCanvas.d.ts"
+        }
     }
 }
