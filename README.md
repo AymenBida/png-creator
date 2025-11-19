@@ -31,7 +31,7 @@ Well, it's the `PixelCanvas` ! It is a tool to create a pixel map of color value
 It is used like this:
 
 ```typescript
-import { PixelCanvas } from 'png-creator';
+import { PixelCanvas } from 'png-creator/canvas';
 
 const canvas = new PixelCanvas({
 	width: 8,
@@ -78,7 +78,8 @@ So now putting everything together we can do something like this:
 
 ```typescript
 import fs from "node:fs";
-import { getPNGCreator, PixelCanvas } from 'png-creator';
+import { getPNGCreator } from 'png-creator';
+import { PixelCanvas } from 'png-creator/canvas';
 
 const canvas = new PixelCanvas({
 	width: 8,
