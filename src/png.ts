@@ -133,7 +133,7 @@ class PNGCreator {
         for (const row of pixelMap) {
             const newRow: number[] = [];
             for (const column of row) {
-                newRow.push(column === undefined ? backgroundColor : column);
+                newRow.push(column === null ? backgroundColor : column);
             }
             newPixelMap.push(newRow);
         }

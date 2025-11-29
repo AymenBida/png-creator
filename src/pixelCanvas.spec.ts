@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { PixelCanvas } from './pixelCanvas.js';
+import { initPixelMap, PixelCanvas } from './pixelCanvas.js';
 import type { PixelCanvasOptions } from './pixelCanvas.js';
 
 const getPixelCanvasOptions = (input: Partial<PixelCanvasOptions> = {}) => {
@@ -100,6 +100,20 @@ describe('PixelCanvas', () => {
             const pixelCanvas = new PixelCanvas(options);
             expect(pixelCanvas.getSize()).toEqual({ width: 32, height: 32 });
             expect(pixelCanvas.getBackgroundColor()).toBe(0x123456);
+        });
+
+        it('should throw if provided pixel map have the wrong height', () => {
+            const pixelMap = initPixelMap({ width: 16, height: 8 });
+            expect(
+                () => new PixelCanvas(getPixelCanvasOptions({ width: 16, height: 16, pixelMap })),
+            ).toThrow(RangeError);
+        });
+
+        it('should throw if provided pixel map have the wrong width', () => {
+            const pixelMap = initPixelMap({ width: 8, height: 16 });
+            expect(
+                () => new PixelCanvas(getPixelCanvasOptions({ width: 16, height: 16, pixelMap })),
+            ).toThrow(RangeError);
         });
     });
 
@@ -390,8 +404,8 @@ describe('PixelCanvas', () => {
             const pixelCanvas = new PixelCanvas(getPixelCanvasOptions({ width: 2, height: 2 }));
             const pixelMap = pixelCanvas.getPixelMap();
             expect(pixelMap).toEqual([
-                [undefined, undefined],
-                [undefined, undefined],
+                [null, null],
+                [null, null],
             ]);
         });
 
@@ -401,8 +415,36 @@ describe('PixelCanvas', () => {
             pixelCanvas.setPixel({ x: 1, y: 1, color: 0x654321 });
             const pixelMap = pixelCanvas.getPixelMap();
             expect(pixelMap).toEqual([
-                [0x123456, undefined],
-                [undefined, 0x654321],
+                [0x123456, null],
+                [null, 0x654321],
+            ]);
+        });
+
+        it('should return the pixel map provided in the constructor', () => {
+            const initialPixelMap = [
+                [0x111111, 0x222222],
+                [0x333333, 0x444444],
+            ];
+            const pixelCanvas = new PixelCanvas(
+                getPixelCanvasOptions({ width: 2, height: 2, pixelMap: initialPixelMap }),
+            );
+            const pixelMap = pixelCanvas.getPixelMap();
+            expect(pixelMap).toEqual(initialPixelMap);
+        });
+
+        it('any modification should apply on top of the provided pixel map', () => {
+            const initialPixelMap = [
+                [0x111111, 0x222222],
+                [0x333333, 0x444444],
+            ];
+            const pixelCanvas = new PixelCanvas(
+                getPixelCanvasOptions({ width: 2, height: 2, pixelMap: initialPixelMap }),
+            );
+            pixelCanvas.setPixel({ x: 0, y: 0, color: 0x123456 });
+            const pixelMap = pixelCanvas.getPixelMap();
+            expect(pixelMap).toEqual([
+                [0x123456, 0x222222],
+                [0x333333, 0x444444],
             ]);
         });
     });
@@ -465,10 +507,10 @@ describe('PixelCanvas', () => {
             pixelCanvas.setPixel({ x: 0, y: 0, color: 0x123456 });
             pixelCanvas.setScale(2);
             expect(pixelCanvas.getPixelMap()).toEqual([
-                [0x123456, 0x123456, undefined, undefined],
-                [0x123456, 0x123456, undefined, undefined],
-                [undefined, undefined, undefined, undefined],
-                [undefined, undefined, undefined, undefined],
+                [0x123456, 0x123456, null, null],
+                [0x123456, 0x123456, null, null],
+                [null, null, null, null],
+                [null, null, null, null],
             ]);
         });
     });

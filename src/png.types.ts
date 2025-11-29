@@ -50,7 +50,7 @@ export type IHDROptions = {
     interlaceMethod?: InterlaceMethod;
 };
 
-export type PixelMap = (number | undefined)[][];
+export type PixelMap = (number | null)[][];
 
 export const VALID_COLOR_VALUE_RANGE = { min: 0, max: 0xffffff };
 

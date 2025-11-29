@@ -14,6 +14,7 @@ export type PixelCanvasOptions = {
     width: number;
     height: number;
     backgroundColor: Color;
+    pixelMap?: PixelMap;
 };
 
 export interface IPixelCanvas {
@@ -22,12 +23,16 @@ export interface IPixelCanvas {
     getBackgroundColor(): number;
 }
 
+export const initPixelMap = ({ width, height }: { width: number; height: number }): PixelMap => {
+    return new Array<number[] | null>(width)
+        .fill(null)
+        .map(() => new Array<number | null>(height).fill(null));
+};
+
 export class PixelCanvas {
     #width: number = 16;
     #height: number = 16;
-    #pixelMap: PixelMap = new Array<number[] | undefined>(this.#width)
-        .fill(undefined)
-        .map(() => new Array<number | undefined>(this.#height).fill(undefined));
+    #pixelMap: PixelMap = initPixelMap({ width: this.#width, height: this.#height });
     #lastUsedColor: number = 0;
     #backgroundColor: number = 0;
 
@@ -43,9 +48,12 @@ export class PixelCanvas {
         throwIfNegative(height);
         this.#height = height;
 
-        this.#pixelMap = new Array<number[] | undefined>(width)
-            .fill(undefined)
-            .map(() => new Array<number | undefined>(height).fill(undefined));
+        if (options.pixelMap) {
+            this.#validateInitialPixelMap(options.pixelMap, width, height);
+            this.#pixelMap = options.pixelMap;
+        } else {
+            this.#pixelMap = initPixelMap({ width, height });
+        }
 
         this.#backgroundColor = this.#validateColor(backgroundColor);
     }
@@ -59,6 +67,21 @@ export class PixelCanvas {
         throwIfNotNumber(color);
         throwIfOutOfRange(color, VALID_COLOR_VALUE_RANGE);
         return color;
+    }
+
+    #validateInitialPixelMap(pixelMap: PixelMap, width: number, height: number): void {
+        if (pixelMap.length !== width) {
+            throw new RangeError(
+                `Initial pixelMap width ${pixelMap.length} does not match specified width ${width}`,
+            );
+        }
+        for (const column of pixelMap) {
+            if (column.length !== height) {
+                throw new RangeError(
+                    `Initial pixelMap height ${column.length} does not match specified height ${height}`,
+                );
+            }
+        }
     }
 
     setPixel({
@@ -163,7 +186,7 @@ export class PixelCanvas {
             for (let j = 0; j < scale; j++) {
                 const newX = x * scale + i;
                 const newY = y * scale + j;
-                pixelMap[newX]![newY] = this.#pixelMap[x]![y];
+                pixelMap[newX]![newY] = this.#pixelMap[x]![y]!;
             }
         }
     }
@@ -175,9 +198,7 @@ export class PixelCanvas {
         throwIfNotInteger(scale);
         const newWidth = this.#width * scale;
         const newHeight = this.#height * scale;
-        const newPixelMap: PixelMap = new Array<number[] | undefined>(newWidth)
-            .fill(undefined)
-            .map(() => new Array<number | undefined>(newHeight).fill(undefined));
+        const newPixelMap: PixelMap = initPixelMap({ width: newWidth, height: newHeight });
         for (let x = 0; x < this.#width; x++) {
             for (let y = 0; y < this.#height; y++) {
                 this.#scaleOnePixel({ x, y, scale, pixelMap: newPixelMap });
