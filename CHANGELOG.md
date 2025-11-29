@@ -1,5 +1,11 @@
 # png-creator
 
+## 3.0.0
+
+### Major Changes
+
+- cdfa616: Support provision of pixelMap when creating a PixelCanvas
+
 ## 2.0.2
 
 ### Patch Changes
